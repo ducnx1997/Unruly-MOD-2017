@@ -6,28 +6,28 @@ export default class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      level: 4,
+      level: 8,
       gameState: 'Ready',
-      seed: 12345,
+      seed: 123456789,
       buttonTitle: 'Regenerate'
     }
   }
 
   _onPress = () => {
     let nextLevel = this.state.level + 2;
-    if (nextLevel > 14)  nextLevel = 8;
+    if (nextLevel > 10)  nextLevel = 4;
     this.setState(prevState => {
       return {
         level: nextLevel,
         gameState: 'Ready',
-        seed: 12345,
+        seed: 123456789,
         buttonTitle: 'Regenerate'
       }
     });
-    console.log(this.state.level);
   }
 
   render() {
+    console.log(this.state.level);
     return (
       <View style={styles.container}>
          <Board level={this.state.level} gameState={this.state.gameState} seed={this.state.seed}/> 

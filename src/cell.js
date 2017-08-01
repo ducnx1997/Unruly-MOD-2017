@@ -13,9 +13,11 @@ export default class Cell extends React.Component {
 
   render() {
     return (
-      <TouchableOpacity style={[styles.container, {height: this.props.height, width: this.props.width}]}
-      onPress={this._onPressCell}>
-        <Text>{this.props.table()[this.props.r][this.props.c]}</Text>
+      <TouchableOpacity style={[styles.container, {height: this.props.height, 
+      width: this.props.width, backgroundColor: this.props.color,
+      borderWidth: this.props.disable? 5:1}]}
+      onPress={this._onPressCell} disabled={this.props.disable}>
+        <Text>{this.props.number}</Text>
       </TouchableOpacity>
     );
   }
@@ -23,7 +25,6 @@ export default class Cell extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
     borderColor: 'black',
     borderWidth: 1,
     alignItems: 'center',
