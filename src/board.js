@@ -8,27 +8,22 @@ export default class Board extends React.Component {
     super(props);
 
     this.state = {
-      table: this._createTable(this.props.level)
+      table: this._genTable(this.props.level)
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.level != this.props.level) return true;
-    return false;
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.level != this.props.level) 
       this.setState(() => {
         return {
-          table: this._createTable(nextProps.level)
+          table: this._genTable(nextProps.level)
         }
       })
   }
-
-  _createTable = (n) => {
-      let table = new Array(n + 1)
-      for (let i = 0; i <= n; i++) table[i] = new Array(n + 1);
+ 
+  _genTable = (n) => {
+      let table = {}
+      for (let i = 0; i <= n; i++) table[i] = {};
       let seed = this.props.seed;
       let seedrandom = require('seedrandom');
       for (let i = 1; i <= n; i++)
@@ -48,32 +43,44 @@ export default class Board extends React.Component {
     return this.state.table;
   }
 
+  _onPressCell(r, c) {
+    this.setState(prevState => {
+      let newTable = Object.create(prevState.table);
+      if (newTable[r][c] === 0) newTable[r][c] = 1;
+      else if (newTable[r][c] === 1) newTable[r][c] = '';
+      else newTable[r][c] = 0;
+      return {
+        table: newTable
+      }
+    })
+  }
+
   _createRow = (r) => {
     row = []
     let {height, width} = Dimensions.get('window');
     for (let i = 1; i <= this.props.level; i++) {
-      //console.log(r); console.log(i);
-      row.push(<Cell key={i} r={r} c={i} number={this.state.table[r][i]}
-      table={this._getTable.bind(this)}
-      level={this.props.level} height={width/this.props.level} width={width/this.props.level}/>)
+      row.push(<Cell key={i} r={r} c={i} 
+      onPressCell={this._onPressCell.bind(this)}
+      table={this._getTable.bind(this)} level={this.props.level} 
+      height={width/this.props.level} width={width/this.props.level}/>)
     }
     return (
       <View key={r} style={{flexDirection: 'row'}}>{row}</View>
     )
   }
 
-  render() {
-    //console.log(this.props.level);
+  _createTable = () => {
     let table = []
     for (let i = 1; i <= this.props.level; i++) 
       table.push(this._createRow(i))
-    // console.log(table.length);
-    //console.log(this._table)
-    let {height, width} = Dimensions.get('window');
+    return table;
+  }
+
+  render() {
+    
     return (
-      <View style={[styles.container, {height: (width/this.props.level)*this.props.level, 
-      width: (width/this.props.level)*this.props.level}]}>
-      {table}
+      <View style={[styles.container]}>
+        {this._createTable()}
       </View>
     );
   }
@@ -81,7 +88,7 @@ export default class Board extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'green',
+    backgroundColor: '#f0f8ff',
     alignItems: 'center',
     justifyContent: 'center',
   },
