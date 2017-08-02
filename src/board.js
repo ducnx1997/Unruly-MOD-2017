@@ -20,35 +20,129 @@ export default class Board extends React.Component {
   _genDisableList = (n, m, seed) => {
     let s = seed
     disableList = [];
-    for (let i = 1; i <= m; i++) {
-      s = s % (n*n);
-      console.log(s);
-      r = Math.floor(s / n) + (s % n != 0 ? 1 : 0);
-      c = s % n;
-      if (c == 0) c = n;
-      disableList.push({r, c});
+    let permu = [];
+    let seedrandom = require('seedrandom');
+    for (let i = 1; i <= n; i++)
+      for (let j = 1; j <= n; j++) 
+        permu.push({ r: i, c: j });
+    for (let i = 0; i < n*n; i++) {
+      let rdn = seedrandom(s);
+      let j = Math.floor(rdn()*n*n);
+      console.log(j);
+      let foo = permu[i];
+      permu[i] = permu[j];
+      permu[j] = foo;
       s = s + seed;
     }
+    for (let i = 0; i < m; i++) disableList.push(permu[i]);
     return disableList;
   }
  
+  // _genTable = (n, seed) => {
+  //     let table = {}
+  //     for (let i = 0; i <= n; i++) table[i] = {};
+  //     let seedrandom = require('seedrandom');
+  //     //base = 100000003;
+  //     //seed = base;
+  //     for (let i = 1; i <= n; i++)
+  //       for (let j = 1; j <= n; j++) {
+  //         //console.log(Math.random());
+  //         let rdn = seedrandom(Math.random());
+  //         //console.log(rdn());
+  //         //seed = (seed + base) % 100000007;
+  //         if (rdn() < 0.5) table[i][j] = 'O';
+  //         else table[i][j] = 'X';
+  //     }
+  //     return table;
+  //   }
   _genTable = (n, seed) => {
-      let table = {}
-      for (let i = 0; i <= n; i++) table[i] = {};
-      let seedrandom = require('seedrandom');
-      //base = 100000003;
-      //seed = base;
-      for (let i = 1; i <= n; i++)
-        for (let j = 1; j <= n; j++) {
-          //console.log(Math.random());
-          let rdn = seedrandom(Math.random());
-          //console.log(rdn());
-          //seed = (seed + base) % 100000007;
-          if (rdn() < 0.5) table[i][j] = 'O';
-          else table[i][j] = 'X';
-      }
-      return table;
+    let table = {}, numOofC = {}, numOofR = {}, numXofC = {}, numXofR = {}
+    for (let i = 1; i <= n; i++) {
+      table[i] = {}
+      numXofC[i] = 0;
+      numOofC[i] = 0;
+      numXofR[i] = 0;
+      numOofR[i] = 0;
     }
+
+    let s = seed
+    
+    let found = false;
+
+    dfs = (x, y) => {
+      if (x > n) {
+        found = true;
+        return;
+      }
+      let canX = true;
+      let canO = true;
+      if (x > 2) {
+          if (table[x-2][y] == table[x-1][y]) {
+            if (table[x-1][y] == 'O') canO = false;
+            else canX = false;
+          }
+      }
+      if (y > 2) {
+        if (table[x][y-2] == table[x][y-1]) {
+          if (table[x][y-1] == 'O') canO = false;
+          else canX = false;
+        }
+      }
+      if (numXofC[y] == n / 2 || numXofR[x] == n / 2) canX = false;
+      if (numOofC[y] == n / 2 || numOofR[x] == n / 2) canO = false;
+      if (!canX && !canO) return;
+      let seedrandom = require('seedrandom');
+      let rand = seedrandom(s)();
+      s = s + seed;
+      if (rand < 0.5) {
+        if (canO) {
+          table[x][y] = 'O';
+          numOofC[y]++;
+          numOofR[x]++;
+          if (y < n) dfs(x, y+1);
+          else dfs(x+1, 1);
+          numOofC[y]--;
+          numOofR[x]--;
+          if (found) return;
+        }
+        if (canX) {
+          table[x][y] = 'X';
+          numXofC[y]++;
+          numXofR[x]++;
+          if (y < n) dfs(x, y+1);
+          else dfs(x+1, 1);
+          numXofC[y]--;
+          numXofR[x]--;
+          if (found) return;
+        }
+      } else {
+        if (canX) {
+          table[x][y] = 'X';
+          numXofC[y]++;
+          numXofR[x]++;
+          if (y < n) dfs(x, y+1);
+          else dfs(x+1, 1);
+          numXofC[y]--;
+          numXofR[x]--;
+          if (found) return;
+        }
+      }
+      if (canO) {
+          table[x][y] = 'O';
+          numOofC[y]++;
+          numOofR[x]++;
+          if (y < n) dfs(x, y+1);
+          else dfs(x+1, 1);
+          numOofC[y]--;
+          numOofR[x]--;
+          if (found) return;
+        }  
+    }
+
+    dfs(1, 1);
+
+    return table;
+  }
 
   _initState = (n, seed) => {
     let table = this._genTable(n, seed);
@@ -57,9 +151,13 @@ export default class Board extends React.Component {
       for (let j = 1; j <= n; j++) {
         let disable = false;
         for (let k = 0; k < disableList.length; k++)
-          if (disableList[k].r == i && disableList[k].c == j) {
-            disable = true;
-            break;
+          {
+            //console.log(k);
+            //console.log(disableList[k]);
+            if (disableList[k].r == i && disableList[k].c == j) {
+              disable = true;
+              break;
+            }
           }
         if (!disable) table[i][j] = '';
       }
