@@ -66,7 +66,7 @@ export default class Board extends React.Component {
     }
 
     let s = seed
-    
+
     let found = false;
 
     dfs = (x, y) => {
@@ -152,8 +152,6 @@ export default class Board extends React.Component {
         let disable = false;
         for (let k = 0; k < disableList.length; k++)
           {
-            //console.log(k);
-            //console.log(disableList[k]);
             if (disableList[k].r == i && disableList[k].c == j) {
               disable = true;
               break;
@@ -204,7 +202,7 @@ export default class Board extends React.Component {
     for (let i = 0; i < 4; i++) 
       if (cnt[i] > this.props.level / 2) return 'red';
     let n = this.props.level;
-    if (this.state.table[r][c] == '') return 'greenyellow';
+    if (this.state.table[r][c] == '') return '#f0f8ff';
     if (r < n && r > 1 && this.state.table[r - 1][c] == this.state.table[r][c] && this.state.table[r][c] == this.state.table[r+1][c]) return 'red';
     if (r < n - 1 && this.state.table[r][c] == this.state.table[r + 1][c] && this.state.table[r + 1][c] == this.state.table[r + 2][c]) return 'red';
     if (r > 2 && this.state.table[r - 2][c] == this.state.table[r - 1][c] && this.state.table[r - 1][c] == this.state.table[r][c]) return 'red';

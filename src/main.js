@@ -20,7 +20,7 @@ export default class Main extends React.Component {
       return {
         level: nextLevel,
         gameState: 'Ready',
-        seed: 123456789,
+        seed: 997,
         buttonTitle: 'Regenerate'
       }
     });
