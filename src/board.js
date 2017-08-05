@@ -11,7 +11,8 @@ export default class Board extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.level != this.props.level) 
+    console.log("next level: " + nextProps.level);
+    if (nextProps.level != this.props.level || nextProps.seed != this.props.seed) 
       this.setState(() => {
         return this._initState(nextProps.level, nextProps.seed);
       })
@@ -28,7 +29,7 @@ export default class Board extends React.Component {
     for (let i = 0; i < n*n; i++) {
       let rdn = seedrandom(s);
       let j = Math.floor(rdn()*n*n);
-      console.log(j);
+      //console.log(j);
       let foo = permu[i];
       permu[i] = permu[j];
       permu[j] = foo;
@@ -145,6 +146,7 @@ export default class Board extends React.Component {
   }
 
   _initState = (n, seed) => {
+    console.log("gen table size: " + n);
     let table = this._genTable(n, seed);
     let disableList = this._genDisableList(n, n * 2, seed);
     for (let i = 1; i <= n; i++)
@@ -236,12 +238,11 @@ export default class Board extends React.Component {
   }
 
   render() {
-    //console.log(this.state.disableList);
     console.log('rerender');
-    //console.log(this.state.disableList);
+    console.log('new level: ' + this.props.level);
     return (
       <View style={[styles.container]}>
-        {this._createTable()}
+        {this._createTable()} 
       </View>
     );
   }
