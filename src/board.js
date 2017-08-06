@@ -11,8 +11,8 @@ export default class Board extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("next level: " + nextProps.level);
-    if (nextProps.level != this.props.level || nextProps.seed != this.props.seed) 
+    //console.log("next level: " + nextProps.level);
+    if (nextProps.level != this.props.level || nextProps.seed != this.props.seed || nextProps.gameId != this.props.gameId) 
       this.setState(() => {
         return this._initState(nextProps.level, nextProps.seed);
       })
@@ -146,11 +146,14 @@ export default class Board extends React.Component {
   }
 
   _initState = (n, seed) => {
-    console.log("gen table size: " + n);
+    //console.log("gen table size: " + n);
     let table = this._genTable(n, seed);
     let disableList = this._genDisableList(n, n * 2, seed);
-    for (let i = 1; i <= n; i++)
+    let solution = {}
+    for (let i = 1; i <= n; i++) {
+      solution[i] = {}
       for (let j = 1; j <= n; j++) {
+        solution[i][j] = table[i][j];
         let disable = false;
         for (let k = 0; k < disableList.length; k++)
           {
@@ -161,7 +164,10 @@ export default class Board extends React.Component {
           }
         if (!disable) table[i][j] = '';
       }
-    return {table, disableList}
+    }
+    //console.log(table);
+    //console.log(solution);
+    return {table, disableList, solution}
   }
 
   _getTable = () => {
@@ -217,14 +223,22 @@ export default class Board extends React.Component {
   _createRow = (r) => {
     row = []
     let {height, width} = Dimensions.get('window');
-    for (let i = 1; i <= this.props.level; i++) {
-      let disable = this._getDisable(r, i);
-      let color = this._getColor(r, i);
-      row.push(<Cell key={i} r={r} c={i} color={color}
-      onPressCell={this._onPressCell.bind(this)} disable={disable}
-      number={this.state.table[r][i]} level={this.props.level} 
-      height={width/this.props.level} width={width/this.props.level}/>)
-    }
+    for (let i = 1; i <= this.props.level; i++) 
+      if (this.props.gameState == 'Ready') {
+        let disable = this._getDisable(r, i);
+        let color = this._getColor(r, i);
+        if (this.props.gameState == 'Ready' ) row.push(<Cell key={i} r={r} c={i} color={color}
+          onPressCell={this._onPressCell.bind(this)} disabled={disable} disable={disable}
+          number={this.state.table[r][i]} level={this.props.level} 
+          isSol={false}
+          height={width/this.props.level} width={width/this.props.level}/>)
+      } else if (this.props.gameState == 'Solution') {
+          row.push(<Cell key={i} r={r} c={i} color={'greenyellow'}
+          onPressCell={this._onPressCell.bind(this)} disable={this._getDisable(r, i)} disabled={true}
+          isSol={true}
+          number={this.state.solution[r][i]} level={this.props.level} 
+          height={width/this.props.level} width={width/this.props.level}/>)
+      }
     return (
       <View key={r} style={{flexDirection: 'row'}}>{row}</View>
     )
@@ -239,7 +253,8 @@ export default class Board extends React.Component {
 
   render() {
     console.log('rerender');
-    console.log('new level: ' + this.props.level);
+    console.log(this.props.gameId);
+    //console.log('new level: ' + this.props.level);
     return (
       <View style={[styles.container]}>
         {this._createTable()} 

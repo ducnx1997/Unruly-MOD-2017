@@ -21,6 +21,7 @@ export default class SeedInput extends React.Component {
     //console.log("seed in input: " + this.state.seed);
     return (
       <TextInput
+        keyboardType="numeric" maxLength={6}
         style={{height: 40, width: 100, borderColor: 'gray', borderWidth: 1}}
         value={this.state.seed}
         onChangeText={(value) => this.setState({ seed: value })}

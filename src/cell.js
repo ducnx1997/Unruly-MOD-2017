@@ -12,11 +12,12 @@ export default class Cell extends React.Component {
   }
 
   render() {
+    //console.log(this.props.disable && !this.props.isSol);
     return (
       <TouchableOpacity style={[styles.container, {height: this.props.height, 
       width: this.props.width, backgroundColor: this.props.color,
-      borderWidth: this.props.disable? 5:1}]}
-      onPress={this._onPressCell} disabled={this.props.disable}>
+      borderWidth: (this.props.disable)? 5:1}]}
+      onPress={this._onPressCell} disabled={this.props.disabled}>
         <Text>{this.props.number}</Text>
       </TouchableOpacity>
     );
