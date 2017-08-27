@@ -5,7 +5,7 @@ no three consecutive squares, horizontally or vertically, are the same colour
 each row and column contains the same number of X and O squares.
 
 # Link APK: 
-https://l.facebook.com/l.php?u=https%3A%2F%2Fexp-shell-app-assets.s3-us-west-1.amazonaws.com%2Fandroid%252F%2540ducnx1997%252Funruly-mod-2017-b51ea531-7ae4-11e7-82d4-0a580a7800cd-signed.apk&h=ATNpN0mpHisZ2lr4kFngDOjNERgrAJIrf021w4t0xYnoihhgBuQCoQdRUHkV4lAz0GYGe3y9wyJPIiFyN89ucrlPZUEZjX-WfKbQm_qZnPKH5HV5tnNZexVf39xNf7ExRCFIAlQcCC0J6OgZXq0gFw
+https://exp-shell-app-assets.s3-us-west-1.amazonaws.com/android%2F%40ducnx1997%2Funruly-mod-2017-b51ea531-7ae4-11e7-82d4-0a580a7800cd-signed.apk
 
 ## Screenshot
 ![Alt text](/src/Screenshot.png?raw=true "Optional Title")
