@@ -1,5 +1,12 @@
 {
   "expo": {
-    "sdkVersion": "19.0.0"
+    "name": "Unruly",
+    "version": "1.0.2",
+    "icon": "./src/Unruly-Logo-Original-2013-10.png",
+    "slug": "unruly-mod-2017",
+    "sdkVersion": "18.0.0",
+    "android": {
+      "package": "com.massp.unruly"
+    }
   }
 }

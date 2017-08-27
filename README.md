@@ -1,3 +1,13 @@
+# Rule
+Colour every square either black or white, in such a way that:
+
+no three consecutive squares, horizontally or vertically, are the same colour
+each row and column contains the same number of black and white squares.
+Left-click in an empty square to turn it black, or right-click to turn it white. Click again in an already-filled square to cycle it between black and white and empty; middle-click to reset any square to empty.
+
+## Screenshot
+![Alt text](/src/Unruly-Logo-Original-2013-10.png?raw=true "Optional Title")
+
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
 Below you'll find information about performing common tasks. The most recent version of this guide is available [here](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/README.md).

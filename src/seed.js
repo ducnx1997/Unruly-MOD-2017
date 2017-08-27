@@ -11,6 +11,12 @@ export default class SeedInput extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      seed: nextProps.seed.toString()
+    })
+  }
+
   _changeSeed = (event) => {
     let value = event.nativeEvent.text;
     //console.log(value);
@@ -19,6 +25,8 @@ export default class SeedInput extends React.Component {
 
   render() {
     //console.log("seed in input: " + this.state.seed);
+    console.log(this.props.seed);
+    console.log(this.state.seed);
     return (
       <TextInput
         keyboardType="numeric" maxLength={6}

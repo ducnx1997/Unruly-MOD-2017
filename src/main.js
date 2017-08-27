@@ -7,9 +7,9 @@ export default class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      level: 6,
+      level: 8,
       gameState: 'Ready',
-      seed: 2017,
+      seed: 1000 + Math.floor(Math.random() * 8999),
       buttonTitle: 'Regenerate',
       gameId: 0
     }
@@ -63,6 +63,7 @@ export default class Main extends React.Component {
   _newGame = () => {
     this.setState(prevState => {
       let newState = Object.assign({}, prevState)
+      newState.seed =  1000 + Math.floor(Math.random() * 8999);
       newState.gameState= 'Ready';
       newState.gameId++;
       return newState;
@@ -107,11 +108,11 @@ export default class Main extends React.Component {
               <Text>New game</Text>
             </TouchableOpacity>
           </View>
-          <View style={{height: 50, width: 100}}>
+          {/* <View style={{height: 50, width: 100}}>
             <TouchableOpacity onPress={this._toggleSolution}>
               <Text>Show solution</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
         
         <Board level={this.state.level} gameState={this.state.gameState} seed={this.state.seed} gameId={this.state.gameId}/> 
